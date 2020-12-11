@@ -17,6 +17,7 @@ PMS_file = "./Data/Rawdata/PMS_V2.xlsx"
 PMS_Phase12_change_slope = read_xlsx(PMS_file, sheet = 13)
 PMS_ALSFRS_init_table = read_xlsx(PMS_file, sheet = 14)
 PMS_ALSFRS_table = read_xlsx(PMS_file, sheet = 15)
+PMS_ALSFRS_cytokine_table = read_xlsx(PMS_file, sheet = 16)
 
 PROACT_file = "./Data/Rawdata/PROACT.xlsx"
 PROACT_ALSFRS = read_xlsx(PROACT_file, sheet = 1)

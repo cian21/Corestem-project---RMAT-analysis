@@ -3,7 +3,7 @@
 # function.R
 
 #### 1. Library Loading ####
-packs = c("data.table", "readxl", "ggpubr", "writexl")
+packs = c("data.table", "readxl", "ggpubr", "writexl", "car")
 lapply(packs, require, character.only = TRUE)
 rm(packs)
 
@@ -847,8 +847,6 @@ PMS_shortage_run = function(PMS_extended_data_table, type){
                 PMS_extended_data_table = PMS_extended_data_table[order(PMS_extended_data_table$SUBJ_ID),]
                 PMS_ALSFRS_table = PMS_ALSFRS_table[order(PMS_ALSFRS_table$SUBJ_ID),]
                 
-                #print(PMS_ALSFRS_table[1:5,1])
-                
                 PMS_shortage_data_table = data.frame(NULL)
                 for (i in 1:nrow(PMS_ALSFRS_table)){
                         for (j in 1:15){
@@ -1009,6 +1007,9 @@ PROACT_summarized_run = function(ALSFRS, Placebo, cp_type, select_type, ALSFRS_c
                 }
                 
         }
+        PROACT_slope = merge(PROACT_slope, Placebo[,c(1,5)], by = "subject_id")
+        PROACT_slope[,5] = "PMS"
+        
         return(PROACT_slope)
 }
 PROACT_stat_run = function(PROACT_ALSFRS, PROACT_Placebo){
@@ -1158,7 +1159,7 @@ PROACT_summarized_short_run = function(ALSFRS, Placebo, cp_type, select_type, AL
                         PROACT_slope[i,"M12_slope"] = (tmp_12m_ALSFRS - tmp_base_ALSFRS) /
                                 tmp_12m_interval
                 }else if(cp_type == "point_style" & select_type == "most"){
-                        tmp_3m = subset(tmp, ALSFRS_Delta >= 3 & ALSFRS_Delta <= 5)
+                        tmp_3m = subset(tmp, ALSFRS_Delta >= 2 & ALSFRS_Delta < 3)
                         if(nrow(tmp_3m) == 1){
                                 tmp_3m_interval = tmp_3m[1,2]
                                 tmp_3m_ALSFRS = tmp_3m[1,3]
@@ -1166,8 +1167,8 @@ PROACT_summarized_short_run = function(ALSFRS, Placebo, cp_type, select_type, AL
                                 tmp_3m_interval = NA
                                 tmp_3m_ALSFRS = NA
                         }else if(nrow(tmp_3m) > 1){
-                                tmp_3m_interval = tmp_3m[which.min(abs(tmp_3m$ALSFRS_Delta - 3)),2]
-                                tmp_3m_ALSFRS = tmp_3m[which.min(abs(tmp_3m$ALSFRS_Delta - 3)),3]
+                                tmp_3m_interval = tmp_3m[which.min(abs(tmp_3m$ALSFRS_Delta - 2)),2]
+                                tmp_3m_ALSFRS = tmp_3m[which.min(abs(tmp_3m$ALSFRS_Delta - 2)),3]
                         }
                         
                         tmp_12m = subset(tmp, ALSFRS_Delta >= 11 & ALSFRS_Delta <= 13)
@@ -1247,6 +1248,8 @@ PROACT_summarized_short_run = function(ALSFRS, Placebo, cp_type, select_type, AL
                 }
                 
         }
+        PROACT_slope = merge(PROACT_slope, Placebo[,c(1,5)], by = "subject_id")
+        PROACT_slope[,5] = "PMS"
         return(PROACT_slope)
 }
 PROACT_stat_short_run = function(PROACT_ALSFRS, PROACT_Placebo){
