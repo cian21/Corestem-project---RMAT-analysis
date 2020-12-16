@@ -1,5 +1,5 @@
-#Corestem project - ALS AE SAE Analysis.proj
-# 20201113 Sehwan Chun at Corestem, Inc.
+#Corestem project - ALS RMAT Analysis.proj
+# 20201216 Sehwan Chun at Corestem, Inc.
 # function.R
 
 #### 1. Library Loading ####
